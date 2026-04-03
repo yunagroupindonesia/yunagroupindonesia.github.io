@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flyer Promosi Member - YUNA GROUP INDONESIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fef2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px 16px;
+            gap: 16px;
+        }
+
+        /* ===== PRINT BUTTON ===== */
+        .print-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35);
+            transition: transform 0.15s;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+            transition: transform 0.15s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-img {
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.15s;
+        }
+
+        .btn-img:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .btn-img:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-png {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-jpg {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.35);
+        }
+
+        .hint {
+            font-size: 0.82rem;
+            color: #64748b;
+            text-align: center;
+        }
+
+        /* ===== FLYER CARD ===== */
+        #flyer {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .flyer-header {
+            background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 50%, #ef4444 100%);
+            padding: 40px 36px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flyer-header::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -60px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .flyer-header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .store-name {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .store-tagline {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 6px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .promo-badge {
+            display: inline-block;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 800;
+            padding: 10px 28px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(6px);
+        }
+
+        /* BODY */
+        .flyer-body {
+            padding: 30px 36px;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ef4444;
+            margin-bottom: 16px;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            gap: 0;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 22px;
+            left: 22px;
+            right: 22px;
+            height: 2px;
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-num {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+            border: 3px solid white;
+        }
+
+        .step-text {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #475569;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #fff5f5, #fef2f2);
+            border: 1.5px solid #fee2e2;
+            border-radius: 16px;
+            padding: 18px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .feature-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 3px;
+        }
+
+        .feature-desc {
+            font-size: 0.72rem;
+            color: #64748b;
+            line-height: 1.45;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #7f1d1d, #ef4444);
+            border-radius: 20px;
+            padding: 24px 28px;
+            color: white;
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .highlight-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .highlight-main {
+            font-size: 1.5rem;
+            font-weight: 900;
+            line-height: 1.25;
+        }
+
+        .highlight-sub {
+            font-size: 0.82rem;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        /* CTA */
+        .cta-box {
+            background: #fff1f2;
+            border: 2px dashed #fca5a5;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .cta-sub {
+            font-size: 0.82rem;
+            color: #64748b;
+            margin-bottom: 14px;
+        }
+
+        .cta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 12px 28px;
+            border-radius: 999px;
+            box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
+        }
+
+        /* FOOTER */
+        .flyer-footer {
+            background: #0d1117;
+            padding: 18px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-store {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .footer-tagline {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .footer-chip {
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 999px;
+        }
+
+        /* ===== EDITOR PANEL ===== */
+        .editor-panel {
+            width: 210mm;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+        }
+        .editor-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+        .editor-header-title { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.03em; }
+        .editor-header-sub { font-size: 0.72rem; opacity: 0.6; margin-top: 2px; }
+        .editor-toggle-icon { font-size: 1.1rem; transition: transform 0.2s; }
+        .editor-body {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .editor-section {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .editor-section.full { grid-column: 1 / -1; }
+        .editor-section-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .editor-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .editor-input {
+            flex: 1;
+            padding: 7px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            background: white;
+            transition: border-color 0.15s;
+        }
+        .editor-input:focus { border-color: #ef4444; }
+        .editor-input.poin-input { width: 64px; flex: none; text-align: center; font-weight: 700; }
+        .editor-del-btn {
+            width: 28px;
+            height: 28px;
+            background: #fee2e2;
+            border: none;
+            border-radius: 7px;
+            color: #dc2626;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        .editor-del-btn:hover { background: #fca5a5; }
+        .editor-add-btn {
+            width: 100%;
+            padding: 7px;
+            background: white;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+        }
+        .editor-add-btn:hover { border-color: #ef4444; color: #ef4444; background: #fff5f5; }
+        .editor-textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            resize: vertical;
+            min-height: 60px;
+            background: white;
+            transition: border-color 0.15s;
+        }
+        .editor-textarea:focus { border-color: #ef4444; }
+        .editor-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+            margin-top: 8px;
+            display: block;
+        }
+        .editor-label:first-child { margin-top: 0; }
+        @media print {
+            .editor-panel { display: none !important; }
+        }
+
+        /* ===== THEME & MOTIF PICKER ===== */
+        .theme-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .theme-swatch {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+            transition: transform 0.15s, border-color 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .theme-swatch:hover { transform: scale(1.1); }
+        .theme-swatch.active { border-color: #1e293b; transform: scale(1.08); }
+        .theme-swatch .tick {
+            display: none;
+            position: absolute;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .theme-swatch.active .tick { display: flex; }
+        .theme-swatch-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #64748b;
+            text-align: center;
+            margin-top: 3px;
+        }
+        /* Logo Upload */
+        .logo-upload-area {
+            width: 100%;
+            height: 76px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            background: white;
+            gap: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-upload-area:hover { border-color: #ef4444; background: #fff5f5; }
+        .logo-upload-area.has-logo { border-style: solid; border-color: #10b981; background: #f0fdf4; }
+        .logo-upload-area .upload-text { font-size: 0.72rem; font-weight: 700; color: #64748b; }
+        .logo-upload-area .upload-sub  { font-size: 0.62rem; color: #94a3b8; }
+        .logo-preview-thumb {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .logo-remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 0.65rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .swatch-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .motif-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .motif-btn {
+            width: 60px;
+            height: 50px;
+            border-radius: 10px;
+            border: 2.5px solid #e2e8f0;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.15s, transform 0.15s;
+            background: #1e3a8a;
+        }
+        .motif-btn:hover { transform: scale(1.08); border-color: #94a3b8; }
+        .motif-btn.active { border-color: #1e293b; }
+        .motif-btn .motif-label {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.55);
+            color: white;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 2px 0;
+        }
+        #header-motif-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.22;
+        }
+        .flyer-header .store-tagline,
+        .flyer-header .store-name,
+        .flyer-header .promo-badge {
+            position: relative;
+            z-index: 1;
+        }
+        @media print { #header-motif-overlay { opacity: 0.18 !important; } }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .print-bar, .hint { display: none !important; }
+
+            @page { size: A4 portrait; margin: 0; }
+
+            #flyer {
+                width: 210mm !important;
+                height: 297mm !important;
+                min-height: unset !important;
+                max-height: 297mm !important;
+                overflow: hidden !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                page-break-after: avoid !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            /* Header — sedikit lebih besar agar mengisi atas */
+            .flyer-header { padding: 28px 36px 22px !important; flex-shrink: 0 !important; }
+            .store-name { font-size: 2.2rem !important; }
+            .store-tagline { font-size: 0.88rem !important; margin-top: 5px !important; }
+            .store-sub { font-size: 0.72rem !important; margin-top: 3px !important; }
+            .promo-badge { font-size: 0.85rem !important; padding: 8px 22px !important; margin-top: 14px !important; }
+
+            /* Body — flex:1 + space-between agar section menyebar mengisi sisa halaman */
+            .flyer-body {
+                padding: 20px 36px 16px !important;
+                flex: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+            .section-title { font-size: 0.65rem !important; margin-bottom: 10px !important; }
+
+            /* Steps */
+            .steps { margin-bottom: 0 !important; }
+            .step-num { width: 38px !important; height: 38px !important; font-size: 1rem !important; }
+            .step-text { font-size: 0.68rem !important; }
+            .steps::before { top: 19px !important; }
+
+            /* Highlight */
+            .highlight-box { padding: 18px 24px !important; border-radius: 16px !important; }
+            .highlight-label { font-size: 0.7rem !important; margin-bottom: 5px !important; }
+            .highlight-main { font-size: 1.25rem !important; }
+            .highlight-sub { font-size: 0.75rem !important; margin-top: 5px !important; }
+
+            /* Features — flex:1 agar bisa mengembang */
+            .features { gap: 10px !important; margin-bottom: 0 !important; }
+            .feature-card { padding: 12px 14px !important; border-radius: 12px !important; gap: 10px !important; align-items: center !important; }
+            .feature-icon { font-size: 1.3rem !important; }
+            .feature-title { font-size: 0.75rem !important; margin-bottom: 2px !important; }
+            .feature-desc { font-size: 0.65rem !important; line-height: 1.35 !important; }
+
+            /* CTA */
+            .cta-box { padding: 16px 20px !important; border-radius: 14px !important; }
+            .cta-title { font-size: 0.95rem !important; margin-bottom: 5px !important; }
+            .cta-sub { font-size: 0.75rem !important; margin-bottom: 10px !important; }
+            .cta-badge { font-size: 0.85rem !important; padding: 10px 24px !important; }
+
+            /* Footer */
+            .flyer-footer { padding: 14px 36px !important; flex-shrink: 0 !important; }
+            .footer-store { font-size: 0.85rem !important; }
+            .footer-tagline { font-size: 0.63rem !important; }
+            .footer-chip { font-size: 0.63rem !important; padding: 5px 12px !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- EDITOR PANEL -->
+    <div class="editor-panel" id="editorPanel">
+        <div class="editor-header" onclick="toggleEditor()">
+            <div>
+                <div class="editor-header-title">⚙️ Edit Konten Flyer</div>
+                <div class="editor-header-sub">Ubah header, poin, hadiah, deskripsi & warna — flyer update otomatis</div>
+            </div>
+            <div class="editor-toggle-icon" id="editorIcon">▼</div>
+        </div>
+        <div id="editorBody" class="editor-body">
+            <!-- HEADER -->
+            <div class="editor-section full">
+                <div class="editor-section-title" style="color:#7f1d1d">🖼️ Kepala Flyer (Header)</div>
+                <div style="display:grid;grid-template-columns:160px 1fr 1fr;gap:10px;align-items:end">
+                    <div>
+                        <label class="editor-label" style="margin-top:0">🖼️ Logo Toko (dari file)</label>
+                        <input type="file" id="logo-file-input" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+                        <div class="logo-upload-area" id="logo-upload-area" onclick="document.getElementById('logo-file-input').click()">
+                            <div id="logo-upload-inner">
+                                <div style="text-align:center">
+                                    <div style="font-size:1.5rem">📁</div>
+                                    <div class="upload-text">Klik untuk upload logo</div>
+                                    <div class="upload-sub">PNG / JPG / SVG</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="editor-label" style="margin-top:0">Tagline di bawah nama toko</label>
+                        <input class="editor-input" id="hdr-tagline" placeholder="Tagline toko..." oninput="renderFlyer()">
+                    </div>
+                    <div>
+                        <label class="editor-label" style="margin-top:0">Teks badge promosi</label>
+                        <input class="editor-input" id="hdr-badge" placeholder="🎉 Teks badge..." oninput="renderFlyer()">
+                    </div>
+                </div>
+            </div>
+            <div class="editor-section">
+                <div class="editor-section-title" style="color:#b91c1c">🔴 Poin Yang Kamu Dapat</div>
+                <div id="poin-editor-rows"></div>
+                <button class="editor-add-btn" onclick="addPoinRow()">+ Tambah Baris Poin</button>
+            </div>
+            <!-- HADIAH -->
+            <div class="editor-section">
+                <div class="editor-section-title" style="color:#15803d">🟢 Contoh Hadiah Tersedia</div>
+                <div id="hadiah-editor-rows"></div>
+                <button class="editor-add-btn" onclick="addHadiahRow()">+ Tambah Baris Hadiah</button>
+            </div>
+            <!-- FITUR CARDS -->
+            <div class="editor-section full">
+                <div class="editor-section-title" style="color:#1e293b">🃏 Deskripsi Keuntungan Member</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+                    <div>
+                        <label class="editor-label">🆔 QR Code Pribadi</label>
+                        <textarea class="editor-textarea" id="desc-qr" oninput="renderFlyer()"></textarea>
+                    </div>
+                    <div>
+                        <label class="editor-label">⭐ Poin Otomatis</label>
+                        <textarea class="editor-textarea" id="desc-poin" oninput="renderFlyer()"></textarea>
+                    </div>
+                    <div>
+                        <label class="editor-label">🎁 Tukar Hadiah Nyata</label>
+                        <textarea class="editor-textarea" id="desc-tukar" oninput="renderFlyer()"></textarea>
+                    </div>
+                    <div>
+                        <label class="editor-label">📊 Cek Poin Sendiri</label>
+                        <textarea class="editor-textarea" id="desc-cek" oninput="renderFlyer()"></textarea>
+                    </div>
+                    <div>
+                        <label class="editor-label">♾️ Hadiah Tidak Terbatas</label>
+                        <textarea class="editor-textarea" id="desc-tak-terbatas" oninput="renderFlyer()"></textarea>
+                    </div>
+                    <div>
+                        <label class="editor-label">🏆 Member Poin Terbanyak</label>
+                        <textarea class="editor-textarea" id="desc-terbanyak" oninput="renderFlyer()"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- WARNA & MOTIF -->
+            <div class="editor-section full">
+                <div class="editor-section-title" style="color:#1e293b">🎨 Warna & Motif Header</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                    <div>
+                        <label class="editor-label" style="margin-top:0">🎨 Pilih Tema Warna</label>
+                        <div class="theme-swatches" id="theme-swatches"></div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+                            <label class="editor-label" style="margin:0;white-space:nowrap">Custom warna 1:</label>
+                            <input type="color" id="custom-color1" value="#7f1d1d" oninput="applyCustomColors()" style="width:38px;height:32px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px">
+                            <label class="editor-label" style="margin:0;white-space:nowrap">warna 2:</label>
+                            <input type="color" id="custom-color2" value="#ef4444" oninput="applyCustomColors()" style="width:38px;height:32px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="editor-label" style="margin-top:0">✨ Pilih Motif/Pattern</label>
+                        <div class="motif-grid" id="motif-grid"></div>
+                        <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+                            <label class="editor-label" style="margin:0">Kekuatan motif:</label>
+                            <input type="range" min="0" max="50" value="22" id="motif-opacity" oninput="updateMotifOpacity(this.value)" style="flex:1">
+                            <span id="motif-opacity-val" style="font-size:0.72rem;font-weight:700;color:#64748b;width:30px">22%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="print-bar">
+        <button class="btn-print" onclick="window.print()">🖨️ Cetak Sekarang (A4)</button>
+        <button class="btn-save" onclick="savePDF()">💾 Simpan sebagai PDF</button>
+        <button id="btnPng" class="btn-img btn-png" onclick="downloadImg('png')">🖼️ Download PNG</button>
+        <button id="btnJpg" class="btn-img btn-jpg" onclick="downloadImg('jpg')">📸 Download JPG</button>
+    </div>
+    <p class="hint">* PDF: pilih "Save as PDF" di printer dialog &nbsp;|&nbsp; PNG/JPG: hasil gambar resolusi tinggi
+        siap WA/cetak</p>
+
+    <!-- FLYER -->
+    <div id="flyer">
+
+        <!-- HEADER -->
+        <div class="flyer-header" id="flyer-header">
+            <div id="header-motif-overlay"></div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:14px;position:relative;z-index:1;margin-bottom:4px">
+                <div style="width:56px;height:56px;background:rgba(255,255,255,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.3);font-size:2rem;flex-shrink:0;overflow:hidden" id="flyer-hdr-icon">
+                        <img id="flyer-logo-img" src="" alt="" style="display:none;width:100%;height:100%;object-fit:contain;border-radius:12px">
+                        <span id="flyer-logo-emoji">📱</span>
+                    </div>
+                <div class="store-name">YUNA GROUP INDONESIA</div>
+            </div>
+            <div class="store-tagline" id="flyer-hdr-tagline">Percetakan · Jasa Dukcapil · Payment · Lacak · Edit
+            </div>
+            <div class="promo-badge" id="flyer-hdr-badge">🎉 KUMPULKAN POIN — TUKAR HADIAH GRATIS!</div>
+        </div>
+
+        <!-- BODY -->
+        <div class="flyer-body">
+
+            <!-- CARA KERJA -->
+            <div class="section-title">📌 Cara Kerja Kartu Member YUNA GROUP INDONESIA</div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-text">Daftar<br>Member<br>(Gratis!)</div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-text">Terima<br>QR Code<br>Unik</div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-text">Tunjukkan<br>QR Tiap<br>Transaksi</div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-text">Poin<br>Otomatis<br>Bertambah</div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-text">Tukar Poin<br>Dapat<br>Hadiah!</div>
+                </div>
+            </div>
+
+            <!-- HIGHLIGHT BOX -->
+            <div class="highlight-box">
+                <div class="highlight-label">⭐ Poin Masuk Otomatis Setiap Kali Kamu Transaksi!</div>
+                <div class="highlight-main">🎁 Kumpulkan Poin → Tukar Hadiah Pilihan</div>
+                <div class="highlight-sub">Scan QR tiap transaksi, poin langsung masuk ke akunmu. Makin sering belanja, makin cepat dapat hadiah seru!</div>
+            </div>
+
+            <!-- TABEL POIN -->
+            <div class="section-title">➱ Poin Per Transaksi & Contoh Hadiah</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+                <div style="background:#fff1f2;border:1.5px solid #fca5a5;border-radius:14px;padding:12px 14px">
+                    <div style="font-size:0.65rem;font-weight:800;color:#b91c1c;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">➱ Poin Yang Kamu Dapat</div>
+                    <div style="display:flex;flex-direction:column;gap:5px" id="flyer-poin-rows"></div>
+                </div>
+                <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;padding:12px 14px">
+                    <div style="font-size:0.65rem;font-weight:800;color:#15803d;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">➱ Contoh Hadiah Tersedia</div>
+                    <div style="display:flex;flex-direction:column;gap:5px" id="flyer-hadiah-rows"></div>
+                </div>
+            </div>
+
+            <!-- FEATURES -->
+            <div class="section-title">⭐ Keuntungan Jadi Member</div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🆔</div>
+                    <div>
+                        <div class="feature-title">QR Code Pribadi</div>
+                        <div class="feature-desc" id="flyer-desc-qr"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <div>
+                        <div class="feature-title">Poin Otomatis</div>
+                        <div class="feature-desc" id="flyer-desc-poin"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <div>
+                        <div class="feature-title">Tukar Hadiah Nyata</div>
+                        <div class="feature-desc" id="flyer-desc-tukar"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div>
+                        <div class="feature-title">Cek Poin Sendiri</div>
+                        <div class="feature-desc" id="flyer-desc-cek"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">♾️</div>
+                    <div>
+                        <div class="feature-title">Hadiah Tidak Terbatas</div>
+                        <div class="feature-desc" id="flyer-desc-tak-terbatas"></div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <div>
+                        <div class="feature-title">Member Poin Terbanyak</div>
+                        <div class="feature-desc" id="flyer-desc-terbanyak"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-box">
+                <div class="cta-title">🚀 Yuk Jadi Member YUNA GROUP INDONESIA!</div>
+                <div class="cta-sub">Daftar gratis, cukup Nama & No. HP. Proses kurang dari 1 menit — langsung dapat QR Code & mulai kumpulkan poin!</div>
+                <div class="cta-badge">📲 Daftar Sekarang — GRATIS & LANGSUNG AKTIF!</div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="flyer-footer">
+            <div>
+                <div class="footer-store">YUNA GROUP INDONESIA</div>
+                <div class="footer-tagline">Percetakan · Jasa Dukcapil · Payment · Lacak · Edit</div>
+            </div>
+            <div class="footer-chip">Member Program 2026</div>
+        </div>
+
+    </div>
+
+    <script>
+        // ===================================================
+        //  DATA — ubah di sini atau lewat panel editor
+        // ===================================================
+        var dataPoin = [
+            { nama: 'Pulsa / Paket Data', poin: '2' },
+            { nama: 'Top Up DANA / OVO', poin: '5' },
+            { nama: 'Aksesori HP (ACC)', poin: '5' },
+            { nama: 'Beli HP', poin: '100' }
+        ];
+        var dataHadiah = [
+            { nama: 'Headset', poin: '250' },
+            { nama: 'Minyak Goreng 2L', poin: '500' },
+            { nama: 'Beras 10 Kg', poin: '750' }
+        ];
+        var dataDesc = {
+            qr: 'Punya QR Code unik sendiri, tinggal scan tiap transaksi — simpan di HP, tanpa kartu fisik!',
+            poin: 'Poin langsung masuk ke akun setiap transaksi berhasil — tidak perlu isi manual!',
+            tukar: 'Poin ditukar hadiah pilihan: sembako, headset, voucher — langsung ambil di kasir!',
+            cek: 'Pantau total poin & riwayat transaksi lewat portal member kapan saja dan di mana saja.',
+            'tak-terbatas': 'Tidak ada batas stok hadiah — asal poin cukup, hadiah bisa langsung ditukar!',
+            terbanyak: 'Makin sering transaksi, makin banyak poin, makin besar hadiah yang bisa kamu ambil!'
+        };
+
+        // ===================================================
+        //  RENDER — update tampilan flyer dari data
+        // ===================================================
+        function renderFlyer() {
+            // Header tagline & badge (logo handled by handleLogoUpload)
+            var tagline = document.getElementById('hdr-tagline');
+            var badge = document.getElementById('hdr-badge');
+            if (tagline) document.getElementById('flyer-hdr-tagline').textContent = tagline.value || 'Percetakan · Jasa Dukcapil · Payment · Lacak · Edit';
+            if (badge) document.getElementById('flyer-hdr-badge').textContent = badge.value || '🎉 KUMPULKAN POIN — TUKAR HADIAH GRATIS!';
+
+            // Poin rows
+            var poinHTML = '';
+            dataPoin.forEach(function(item) {
+                poinHTML += '<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#1e293b">'
+                    + '<span>\u27b1 ' + item.nama + '</span>'
+                    + '<span style="font-weight:800;color:#b91c1c">+' + item.poin + ' \u2b50</span></div>';
+            });
+            document.getElementById('flyer-poin-rows').innerHTML = poinHTML;
+
+            // Hadiah rows
+            var hadiahHTML = '';
+            dataHadiah.forEach(function(item) {
+                hadiahHTML += '<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#1e293b">'
+                    + '<span>\u27b1 ' + item.nama + '</span>'
+                    + '<span style="font-weight:800;color:#15803d">' + item.poin + ' \u2b50</span></div>';
+            });
+            hadiahHTML += '<div style="font-size:0.65rem;color:#64748b;margin-top:4px">dan hadiah lainnya...</div>';
+            document.getElementById('flyer-hadiah-rows').innerHTML = hadiahHTML;
+
+            // Desc cards — baca dari textarea
+            var keys = ['qr','poin','tukar','cek','tak-terbatas','terbanyak'];
+            keys.forEach(function(k) {
+                var ta = document.getElementById('desc-' + k);
+                var el = document.getElementById('flyer-desc-' + k);
+                if (ta && el) el.textContent = ta.value;
+            });
+        }
+
+        // ===================================================
+        //  BUILD EDITOR — render input rows dari data
+        // ===================================================
+        function buildEditorRows() {
+            // Populate header inputs
+            document.getElementById('hdr-tagline').value = 'Percetakan · Jasa Dukcapil · Payment · Lacak · Edit';
+            document.getElementById('hdr-badge').value = '🎉 KUMPULKAN POIN — TUKAR HADIAH GRATIS!';
+
+            renderPoinEditorRows();
+            renderHadiahEditorRows();
+            // Fill desc textareas
+            var keys = ['qr','poin','tukar','cek','tak-terbatas','terbanyak'];
+            keys.forEach(function(k) {
+                var ta = document.getElementById('desc-' + k);
+                if (ta) ta.value = dataDesc[k] || '';
+            });
+        }
+
+        function renderPoinEditorRows() {
+            var container = document.getElementById('poin-editor-rows');
+            container.innerHTML = '';
+            dataPoin.forEach(function(item, idx) {
+                var row = document.createElement('div');
+                row.className = 'editor-row';
+                row.innerHTML =
+                    '<input class="editor-input" placeholder="Nama item" value="' + escHtml(item.nama) + '" oninput="dataPoin[' + idx + '].nama=this.value;renderFlyer()">'
+                    + '<input class="editor-input poin-input" placeholder="Poin" value="' + escHtml(item.poin) + '" oninput="dataPoin[' + idx + '].poin=this.value;renderFlyer()">'
+                    + '<button class="editor-del-btn" onclick="deletePoinRow(' + idx + ')">🗑</button>';
+                container.appendChild(row);
+            });
+        }
+
+        function renderHadiahEditorRows() {
+            var container = document.getElementById('hadiah-editor-rows');
+            container.innerHTML = '';
+            dataHadiah.forEach(function(item, idx) {
+                var row = document.createElement('div');
+                row.className = 'editor-row';
+                row.innerHTML =
+                    '<input class="editor-input" placeholder="Nama hadiah" value="' + escHtml(item.nama) + '" oninput="dataHadiah[' + idx + '].nama=this.value;renderFlyer()">'
+                    + '<input class="editor-input poin-input" placeholder="Poin" value="' + escHtml(item.poin) + '" oninput="dataHadiah[' + idx + '].poin=this.value;renderFlyer()">'
+                    + '<button class="editor-del-btn" onclick="deleteHadiahRow(' + idx + ')">🗑</button>';
+                container.appendChild(row);
+            });
+        }
+
+        function addPoinRow() {
+            dataPoin.push({ nama: '', poin: '' });
+            renderPoinEditorRows();
+            renderFlyer();
+        }
+        function deletePoinRow(idx) {
+            dataPoin.splice(idx, 1);
+            renderPoinEditorRows();
+            renderFlyer();
+        }
+        function addHadiahRow() {
+            dataHadiah.push({ nama: '', poin: '' });
+            renderHadiahEditorRows();
+            renderFlyer();
+        }
+        function deleteHadiahRow(idx) {
+            dataHadiah.splice(idx, 1);
+            renderHadiahEditorRows();
+            renderFlyer();
+        }
+
+        // ===================================================
+        //  LOGO UPLOAD
+        // ===================================================
+        var uploadedLogoDataUrl = null;
+
+        function handleLogoUpload(input) {
+            var file = input.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedLogoDataUrl = e.target.result;
+                // Update flyer
+                var img = document.getElementById('flyer-logo-img');
+                var emoji = document.getElementById('flyer-logo-emoji');
+                img.src = uploadedLogoDataUrl;
+                img.style.display = 'block';
+                emoji.style.display = 'none';
+                document.getElementById('flyer-hdr-icon').style.background = 'rgba(255,255,255,0.95)';
+                // Update upload area preview
+                var area = document.getElementById('logo-upload-area');
+                area.classList.add('has-logo');
+                document.getElementById('logo-upload-inner').innerHTML =
+                    '<img src="' + uploadedLogoDataUrl + '" class="logo-preview-thumb" alt="logo">'
+                    + '<button class="logo-remove-btn" onclick="removeLogo(event)" title="Hapus logo">✕</button>'
+                    + '<div class="upload-text" style="font-size:0.62rem;color:#059669">Logo terpasang ✔</div>';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeLogo(e) {
+            e.stopPropagation();
+            uploadedLogoDataUrl = null;
+            var img = document.getElementById('flyer-logo-img');
+            var emoji = document.getElementById('flyer-logo-emoji');
+            img.src = ''; img.style.display = 'none';
+            emoji.style.display = 'inline';
+            document.getElementById('flyer-hdr-icon').style.background = 'rgba(255,255,255,0.2)';
+            var area = document.getElementById('logo-upload-area');
+            area.classList.remove('has-logo');
+            document.getElementById('logo-upload-inner').innerHTML =
+                '<div style="text-align:center">'
+                + '<div style="font-size:1.5rem">📁</div>'
+                + '<div class="upload-text">Klik untuk upload logo</div>'
+                + '<div class="upload-sub">PNG / JPG / SVG</div>'
+                + '</div>';
+            document.getElementById('logo-file-input').value = '';
+        }
+
+        // ===================================================
+        //  COLOR THEMES
+        // ===================================================
+        var colorThemes = [
+            { key:'merah',   label:'Merah',    c1:'#7f1d1d', c2:'#ef4444' },
+            { key:'oranye',  label:'Oranye',   c1:'#7c2d12', c2:'#f97316' },
+            { key:'kuning',  label:'Kuning',   c1:'#713f12', c2:'#eab308' },
+            { key:'hijau',   label:'Hijau',    c1:'#14532d', c2:'#22c55e' },
+            { key:'teal',    label:'Teal',     c1:'#134e4a', c2:'#14b8a6' },
+            { key:'biru',    label:'Biru',     c1:'#1e3a8a', c2:'#3b82f6' },
+            { key:'ungu',    label:'Ungu',     c1:'#4c1d95', c2:'#8b5cf6' },
+            { key:'pink',    label:'Pink',     c1:'#831843', c2:'#ec4899' },
+            { key:'gelap',   label:'Elegan',   c1:'#0f172a', c2:'#334155' },
+            { key:'emas',    label:'Emas',     c1:'#451a03', c2:'#d97706' }
+        ];
+        var activeTheme = { c1: '#7f1d1d', c2: '#ef4444' };
+        var activeMotif = 'polos';
+        var motifOpacity = 0.22;
+
+        function buildSwatches() {
+            var container = document.getElementById('theme-swatches');
+            container.innerHTML = '';
+            colorThemes.forEach(function(t) {
+                var wrap = document.createElement('div');
+                wrap.className = 'swatch-wrap';
+                var btn = document.createElement('div');
+                btn.className = 'theme-swatch' + (t.key === 'merah' ? ' active' : '');
+                btn.style.background = 'linear-gradient(135deg,' + t.c1 + ',' + t.c2 + ')';
+                btn.id = 'swatch-' + t.key;
+                btn.innerHTML = '<div class="tick">✔️</div>';
+                btn.onclick = (function(theme) { return function() { applyTheme(theme.c1, theme.c2, theme.key); }; })(t);
+                var lbl = document.createElement('div');
+                lbl.className = 'theme-swatch-label';
+                lbl.textContent = t.label;
+                wrap.appendChild(btn);
+                wrap.appendChild(lbl);
+                container.appendChild(wrap);
+            });
+        }
+
+        function applyTheme(c1, c2, key) {
+            activeTheme = { c1: c1, c2: c2 };
+            document.querySelectorAll('.theme-swatch').forEach(function(el) { el.classList.remove('active'); });
+            if (key) {
+                var sw = document.getElementById('swatch-' + key);
+                if (sw) sw.classList.add('active');
+                document.getElementById('custom-color1').value = c1;
+                document.getElementById('custom-color2').value = c2;
+            }
+            injectThemeStyle(c1, c2);
+        }
+
+        function applyCustomColors() {
+            var c1 = document.getElementById('custom-color1').value;
+            var c2 = document.getElementById('custom-color2').value;
+            document.querySelectorAll('.theme-swatch').forEach(function(el) { el.classList.remove('active'); });
+            applyTheme(c1, c2, null);
+        }
+
+        function injectThemeStyle(c1, c2) {
+            var mid = c2; // middle tone = c2
+            var style = document.getElementById('theme-style-tag');
+            if (!style) { style = document.createElement('style'); style.id = 'theme-style-tag'; document.head.appendChild(style); }
+            style.textContent = [
+                '#flyer-header { background: linear-gradient(135deg,' + c1 + ' 0%,' + mid + ' 50%,' + c2 + ' 100%) !important; }',
+                '.highlight-box { background: linear-gradient(135deg,' + c1 + ',' + c2 + ') !important; }',
+                '.step-num { background: linear-gradient(135deg,' + c2 + ',' + c1 + ') !important; box-shadow: 0 4px 14px ' + c2 + '55 !important; }',
+                '.steps::before { background: linear-gradient(90deg,' + c2 + ',' + c1 + ') !important; }',
+                '.cta-badge { background: linear-gradient(135deg,' + c2 + ',' + c1 + ') !important; box-shadow: 0 4px 16px ' + c2 + '66 !important; }',
+                '.section-title { color: ' + c2 + ' !important; }',
+                '.feature-card { background: linear-gradient(135deg,' + c2 + '0d,' + c2 + '18) !important; border-color: ' + c2 + '44 !important; }',
+                '.flyer-header .promo-badge { background: rgba(255,255,255,0.15) !important; }',
+                '#flyer-poin-rows span[style*="b91c1c"] { color: ' + c1 + ' !important; }'
+            ].join('\n');
+        }
+
+        // ===================================================
+        //  MOTIF PATTERNS
+        // ===================================================
+        var motifs = [
+            { key:'polos',    label:'Polos',    bg:'' },
+            { key:'dots',     label:'Titik',    bg:'radial-gradient(circle, #fff 1.5px, transparent 1.5px)', size:'18px 18px' },
+            { key:'bigdots',  label:'Bulat',    bg:'radial-gradient(circle, #fff 5px, transparent 5px)', size:'28px 28px' },
+            { key:'diagonal', label:'Diagonal', bg:'repeating-linear-gradient(45deg, #fff 0px, #fff 1.5px, transparent 1.5px, transparent 12px)', size:'' },
+            { key:'grid',     label:'Grid',     bg:'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', size:'20px 20px' },
+            { key:'zigzag',   label:'Zigzag',   bg:'linear-gradient(135deg,#fff 25%,transparent 25%) -10px 0, linear-gradient(225deg,#fff 25%,transparent 25%) -10px 0, linear-gradient(315deg,#fff 25%,transparent 25%), linear-gradient(45deg,#fff 25%,transparent 25%)', size:'20px 20px' },
+            { key:'wave',     label:'Gelombang',bg:'repeating-linear-gradient(-45deg,transparent,transparent 5px,#fff 5px,#fff 6px)', size:'' },
+            { key:'cross',    label:'Silang',   bg:'linear-gradient(#fff 2px, transparent 2px), linear-gradient(90deg, #fff 2px, transparent 2px), linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px)', size:'50px 50px, 50px 50px, 10px 10px, 10px 10px' },
+            { key:'hex',      label:'Sisik',    bg:'radial-gradient(circle at 0% 50%, transparent 20%, #fff 21%, #fff 34%, transparent 35%), radial-gradient(circle at 100% 50%, transparent 20%, #fff 21%, #fff 34%, transparent 35%)', size:'60px 30px' }
+        ];
+
+        function buildMotifGrid() {
+            var container = document.getElementById('motif-grid');
+            container.innerHTML = '';
+            motifs.forEach(function(m) {
+                var btn = document.createElement('div');
+                btn.className = 'motif-btn' + (m.key === 'polos' ? ' active' : '');
+                btn.id = 'motif-btn-' + m.key;
+                btn.style.background = 'linear-gradient(135deg,#1e3a8a,#3b82f6)';
+                if (m.bg) {
+                    btn.style.backgroundImage = m.bg;
+                    if (m.size) btn.style.backgroundSize = m.size;
+                }
+                btn.innerHTML = '<div class="motif-label">' + m.label + '</div>';
+                btn.onclick = (function(motif) { return function() { applyMotif(motif.key); }; })(m);
+                container.appendChild(btn);
+            });
+        }
+
+        function applyMotif(key) {
+            activeMotif = key;
+            document.querySelectorAll('.motif-btn').forEach(function(el) { el.classList.remove('active'); });
+            var btn = document.getElementById('motif-btn-' + key);
+            if (btn) btn.classList.add('active');
+            var overlay = document.getElementById('header-motif-overlay');
+            var m = motifs.find(function(x) { return x.key === key; });
+            if (!m || !m.bg) {
+                overlay.style.backgroundImage = 'none';
+            } else {
+                overlay.style.backgroundImage = m.bg;
+                if (m.size) overlay.style.backgroundSize = m.size;
+                else overlay.style.backgroundSize = '';
+            }
+        }
+
+        function updateMotifOpacity(val) {
+            motifOpacity = val / 100;
+            document.getElementById('motif-opacity-val').textContent = val + '%';
+            document.getElementById('header-motif-overlay').style.opacity = motifOpacity;
+        }
+
+        function escHtml(s) {
+            return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        // ===================================================
+        //  TOGGLE EDITOR
+        // ===================================================
+        var editorOpen = true;
+        function toggleEditor() {
+            editorOpen = !editorOpen;
+            document.getElementById('editorBody').style.display = editorOpen ? 'grid' : 'none';
+            document.getElementById('editorIcon').style.transform = editorOpen ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+
+        // Init on load
+        window.addEventListener('DOMContentLoaded', function() {
+            buildEditorRows();
+            buildSwatches();
+            buildMotifGrid();
+            renderFlyer();
+            injectThemeStyle('#7f1d1d', '#ef4444');
+        });
+
+        function savePDF() {
+            alert('Klik "Cetak Sekarang", lalu di jendela print pilih printer "Save as PDF" atau "Microsoft Print to PDF"');
+        }
+
+        function downloadImg(format) {
+            var btnPng = document.getElementById('btnPng');
+            var btnJpg = document.getElementById('btnJpg');
+            var flyer = document.getElementById('flyer');
+
+            // Disable buttons saat proses
+            btnPng.disabled = true;
+            btnJpg.disabled = true;
+            btnPng.textContent = '⏳ Memproses...';
+            btnJpg.textContent = '⏳ Memproses...';
+
+            html2canvas(flyer, {
+                scale: 3,           // resolusi 3x = kualitas tinggi
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                logging: false
+            }).then(function (canvas) {
+                var link = document.createElement('a');
+                if (format === 'png') {
+                    link.download = 'PROMO_MEMBER_HAMBA_CELL_PRINT.png';
+                    link.href = canvas.toDataURL('image/png');
+                } else {
+                    link.download = 'PROMO_MEMBER_HAMBA_CELL_PRINT.jpg';
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                }
+                link.click();
+
+                // Re-enable buttons
+                btnPng.disabled = false;
+                btnJpg.disabled = false;
+                btnPng.textContent = '🖼️ Download PNG';
+                btnJpg.textContent = '📸 Download JPG';
+            }).catch(function (err) {
+                alert('Gagal membuat gambar: ' + err.message);
+                btnPng.disabled = false;
+                btnJpg.disabled = false;
+                btnPng.textContent = '🖼️ Download PNG';
+                btnJpg.textContent = '📸 Download JPG';
+            });
+        }
+    </script>
+
+</body>
+
+</html>
