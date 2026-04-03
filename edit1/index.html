@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mading Kartu Member - YUNA GROUP INDONESIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fef2f2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px 16px;
+            gap: 14px;
+        }
+
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            color: white;
+            border: none;
+            padding: 11px 22px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 14px rgba(220, 38, 38, .35);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, .3);
+        }
+
+        .btn-png {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 14px rgba(245, 158, 11, .3);
+        }
+
+        .btn-jpg {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            box-shadow: 0 4px 14px rgba(236, 72, 153, .3);
+        }
+
+        .hint {
+            font-size: 0.78rem;
+            color: #64748b;
+            text-align: center;
+        }
+
+        /* ===== POSTER — LANDSCAPE A4 ===== */
+        #poster {
+            width: 297mm;
+            height: 210mm;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, .2);
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* ---- LEFT PANEL ---- */
+        .left-panel {
+            width: 42%;
+            background: linear-gradient(160deg, #7f1d1d 0%, #dc2626 50%, #ef4444 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -60px;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .store-logo {
+            font-size: 2.8rem;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .store-name {
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.02em;
+            text-align: center;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .store-sub {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, .65);
+            text-align: center;
+            margin-top: 5px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Alert card */
+        .alert-card {
+            margin-top: 22px;
+            background: rgba(255, 255, 255, .12);
+            border: 1.5px solid rgba(255, 255, 255, .25);
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(4px);
+        }
+
+        .alert-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .alert-title {
+            font-size: 0.78rem;
+            font-weight: 900;
+            color: #fef08a;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        .alert-desc {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, .8);
+            margin-top: 5px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Divider dots */
+        .dots {
+            display: flex;
+            gap: 5px;
+            margin-top: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .3);
+        }
+
+        .dot.active {
+            background: #fef08a;
+        }
+
+        /* ---- RIGHT PANEL ---- */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 28px 30px 20px;
+            background: #fafbff;
+        }
+
+        .panel-title {
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ef4444;
+            margin-bottom: 10px;
+        }
+
+        .main-heading {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #1e293b;
+            line-height: 1.25;
+            margin-bottom: 20px;
+        }
+
+        .main-heading span {
+            color: #ef4444;
+        }
+
+        /* ---- STEPS ---- */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            flex: 1;
+        }
+
+        .step-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: white;
+            border: 1.5px solid #fca5a5;
+            border-radius: 14px;
+            padding: 11px 14px;
+            transition: background 0.15s;
+        }
+
+        .snum {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(220, 38, 38, .4);
+        }
+
+        .s-emoji {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            width: 28px;
+            text-align: center;
+        }
+
+        .s-info {
+            flex: 1;
+        }
+
+        .s-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .s-desc {
+            font-size: 0.68rem;
+            color: #64748b;
+            margin-top: 1px;
+            line-height: 1.4;
+        }
+
+        /* ---- FOOTER STRIP ---- */
+        .footer-strip {
+            margin-top: 14px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            border-radius: 12px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .footer-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .footer-text {
+            flex: 1;
+        }
+
+        .footer-text strong {
+            display: block;
+            font-size: 0.82rem;
+            color: white;
+            font-weight: 800;
+        }
+
+        .footer-text span {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, .7);
+            font-weight: 500;
+        }
+
+        .footer-badge {
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .3);
+            color: #fef08a;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: block !important;
+            }
+
+            .toolbar,
+            .hint {
+                display: none !important;
+            }
+
+            #poster {
+                width: 297mm !important;
+                height: 210mm !important;
+                min-height: unset !important;
+                max-height: 210mm !important;
+                overflow: hidden !important;
+                box-shadow: none !important;
+                display: flex !important;
+                flex-direction: row !important;
+                page-break-after: avoid !important;
+            }
+
+            /* Left panel — isi penuh tinggi */
+            .left-panel {
+                width: 42% !important;
+                padding: 28px 24px !important;
+                justify-content: center !important;
+                flex-shrink: 0 !important;
+            }
+
+            .store-logo { font-size: 2.6rem !important; }
+            .store-name { font-size: 1.9rem !important; margin-top: 8px !important; }
+            .store-sub { font-size: 0.72rem !important; margin-top: 5px !important; }
+
+            .alert-card {
+                margin-top: 20px !important;
+                padding: 14px 16px !important;
+                border-radius: 14px !important;
+            }
+            .alert-icon { font-size: 1.8rem !important; margin-bottom: 6px !important; }
+            .alert-title { font-size: 0.78rem !important; }
+            .alert-desc { font-size: 0.65rem !important; margin-top: 5px !important; }
+            .dots { margin-top: 18px !important; }
+
+            /* Right panel — stretch + space-between agar steps & footer mengisi tinggi */
+            .right-panel {
+                flex: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                padding: 24px 28px 18px !important;
+            }
+
+            .panel-title { font-size: 0.62rem !important; margin-bottom: 10px !important; }
+            .main-heading { font-size: 1.3rem !important; margin-bottom: 16px !important; }
+
+            /* Steps — flex:1 dan tiap baris menengah */
+            .steps {
+                flex: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important;
+                justify-content: space-between !important;
+                margin-bottom: 12px !important;
+            }
+
+            .step-row {
+                flex: 1 !important;
+                padding: 10px 14px !important;
+                border-radius: 12px !important;
+                gap: 12px !important;
+                margin-bottom: 0 !important;
+            }
+
+            .snum { width: 32px !important; height: 32px !important; font-size: 0.88rem !important; }
+            .s-emoji { font-size: 1.3rem !important; width: 26px !important; }
+            .s-title { font-size: 0.82rem !important; }
+            .s-desc { font-size: 0.65rem !important; margin-top: 1px !important; line-height: 1.35 !important; }
+
+            /* Footer strip */
+            .footer-strip {
+                padding: 12px 18px !important;
+                border-radius: 12px !important;
+                gap: 12px !important;
+                flex-shrink: 0 !important;
+            }
+            .footer-icon { font-size: 1.4rem !important; }
+            .footer-text strong { font-size: 0.8rem !important; }
+            .footer-text span { font-size: 0.63rem !important; }
+            .footer-badge { font-size: 0.63rem !important; padding: 5px 12px !important; }
+        }
+
+        /* ===== EDITOR PANEL ===== */
+        @media print { .editor-panel, .editor-panel * { display: none !important; } }
+        .editor-panel {
+            width: 297mm;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+        }
+        .editor-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 13px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+        .editor-header-title { font-size: 0.88rem; font-weight: 800; }
+        .editor-header-sub { font-size: 0.7rem; opacity: 0.6; margin-top: 2px; }
+        .editor-toggle { font-size: 1rem; transition: transform 0.2s; }
+        .editor-body {
+            padding: 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+        }
+        .ed-sec {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 13px;
+        }
+        .ed-sec.full { grid-column: 1 / -1; }
+        .ed-sec.half { grid-column: span 2; }
+        .ed-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .ed-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .ed-input {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            background: white;
+            transition: border-color 0.15s;
+        }
+        .ed-input:focus { border-color: #ef4444; }
+        /* Logo upload */
+        .logo-area {
+            width: 100%;
+            height: 72px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: white;
+            transition: border-color 0.15s, background 0.15s;
+            gap: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-area:hover { border-color: #ef4444; background: #fff5f5; }
+        .logo-area.has-logo { border-style: solid; border-color: #10b981; background: #f0fdf4; }
+        .logo-area .la-text { font-size: 0.7rem; font-weight: 700; color: #64748b; }
+        .logo-area .la-sub  { font-size: 0.6rem; color: #94a3b8; }
+        .logo-thumb { width: 42px; height: 42px; object-fit: contain; border-radius: 7px; }
+        .logo-rm {
+            position: absolute; top: 3px; right: 3px;
+            width: 18px; height: 18px;
+            background: #ef4444; border: none; border-radius: 50%;
+            color: white; font-size: 0.6rem; font-weight: 900;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        /* Swatches */
+        .swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+        .swatch {
+            width: 38px; height: 38px; border-radius: 9px; cursor: pointer;
+            border: 3px solid transparent; transition: transform 0.15s, border-color 0.15s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15); position: relative;
+        }
+        .swatch:hover { transform: scale(1.12); }
+        .swatch.active { border-color: #1e293b; transform: scale(1.1); }
+        .swatch .tick { display:none; position:absolute; inset:0; align-items:center; justify-content:center; font-size:0.9rem; }
+        .swatch.active .tick { display:flex; }
+        .sw-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+        .sw-label { font-size:0.55rem; font-weight:700; color:#64748b; }
+        /* Motif */
+        .motif-grid { display:flex; flex-wrap:wrap; gap:7px; }
+        .motif-btn {
+            width:56px; height:44px; border-radius:9px;
+            border: 2.5px solid #e2e8f0; cursor:pointer;
+            position:relative; overflow:hidden;
+            transition: border-color 0.15s, transform 0.15s;
+            background: #1e3a8a;
+        }
+        .motif-btn:hover { transform:scale(1.08); border-color:#94a3b8; }
+        .motif-btn.active { border-color:#1e293b; }
+        .motif-btn .ml { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.55); color:white; font-size:0.5rem; font-weight:700; text-align:center; padding:1px 0; }
+        /* Overlay motif on left panel */
+        #lp-motif-overlay {
+            position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.22;
+        }
+        .left-panel .store-logo,
+        .left-panel .store-name,
+        .left-panel .store-sub,
+        .left-panel .alert-card,
+        .left-panel .dots { position:relative; z-index:1; }
+    </style>
+</head>
+
+<body>
+
+    <!-- EDITOR PANEL -->
+    <div class="editor-panel">
+        <div class="editor-header" onclick="toggleEditor()">
+            <div>
+                <div class="editor-header-title">⚙️ Edit Konten Mading</div>
+                <div class="editor-header-sub">Upload logo, ubah tagline, ganti warna & motif — update otomatis</div>
+            </div>
+            <div class="editor-toggle" id="edToggle">▼</div>
+        </div>
+        <div id="edBody" class="editor-body">
+
+            <!-- Logo -->
+            <div class="ed-sec">
+                <div class="ed-title" style="color:#7f1d1d">🖼️ Logo Toko</div>
+                <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogo(this)">
+                <div class="logo-area" id="logo-area" onclick="document.getElementById('logo-input').click()">
+                    <div id="logo-inner">
+                        <div style="text-align:center">
+                            <div style="font-size:1.4rem">📁</div>
+                            <div class="la-text">Klik upload logo</div>
+                            <div class="la-sub">PNG / JPG / SVG</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tagline -->
+            <div class="ed-sec half">
+                <div class="ed-title" style="color:#1e293b">📝 Teks Panel Kiri</div>
+                <label class="ed-label">Tagline (di bawah nama toko)</label>
+                <input class="ed-input" id="ed-tagline" oninput="applyEdits()" placeholder="Tagline toko...">
+                <label class="ed-label" style="margin-top:8px">Isi alert card (tunjukkan QR Code, dst)</label>
+                <input class="ed-input" id="ed-alert-title" oninput="applyEdits()" placeholder="Judul alert...">
+                <label class="ed-label" style="margin-top:6px">Sub-teks alert</label>
+                <input class="ed-input" id="ed-alert-desc" oninput="applyEdits()" placeholder="Deskripsi alert...">
+            </div>
+
+            <!-- Warna -->
+            <div class="ed-sec">
+                <div class="ed-title" style="color:#1e293b">🎨 Tema Warna</div>
+                <div class="swatches" id="swatches"></div>
+                <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+                    <label class="ed-label" style="margin:0;white-space:nowrap">Custom:</label>
+                    <input type="color" id="cc1" value="#7f1d1d" oninput="applyCustomColor()" style="width:34px;height:28px;border-radius:7px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px">
+                    <input type="color" id="cc2" value="#ef4444" oninput="applyCustomColor()" style="width:34px;height:28px;border-radius:7px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px">
+                </div>
+            </div>
+
+            <!-- Motif -->
+            <div class="ed-sec">
+                <div class="ed-title" style="color:#1e293b">✨ Motif/Pattern</div>
+                <div class="motif-grid" id="motif-grid"></div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+                    <label class="ed-label" style="margin:0;white-space:nowrap">Kekuatan:</label>
+                    <input type="range" min="0" max="50" value="22" id="motif-opacity" oninput="updateOpacity(this.value)" style="flex:1">
+                    <span id="op-val" style="font-size:0.7rem;font-weight:700;color:#64748b;width:28px">22%</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Cetak (A4 Landscape)</button>
+        <button class="btn btn-pdf" onclick="savePDF()">💾 Simpan PDF</button>
+        <button id="btnPng" class="btn btn-png" onclick="downloadImg('png')">🖼️ Download PNG</button>
+        <button id="btnJpg" class="btn btn-jpg" onclick="downloadImg('jpg')">📸 Download JPG</button>
+    </div>
+    <p class="hint">Ukuran cetak: A4 Landscape | Cocok untuk mading / pajangan di atas etalase konter</p>
+
+    <!-- POSTER -->
+    <div id="poster">
+
+        <!-- LEFT -->
+        <div class="left-panel" id="left-panel">
+            <div id="lp-motif-overlay"></div>
+            <div class="store-logo" style="position:relative;z-index:1;" id="mading-logo-el">
+                <img id="mading-logo-img" src="" alt="" style="display:none;width:52px;height:52px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,0.9);padding:4px">
+                <span id="mading-logo-emoji">📱</span>
+            </div>
+            <div class="store-name">YUNA GROUP INDONESIA</div>
+            <div class="store-sub" id="mading-tagline-el">Percetakan · Jasa Dukcapil · Payment · Lacak · Edit</div>
+
+            <div class="alert-card">
+                <span class="alert-icon">⭐</span>
+                <div class="alert-title" id="mading-alert-title">⚠️ Tunjukkan QR Code<br>Setiap Bertransaksi!</div>
+                <div class="alert-desc" id="mading-alert-desc">
+                    Scan QR tiap transaksi agar<br>
+                    poin Anda <strong style="color:#fef08a;">langsung masuk otomatis.</strong><br>
+                    Kumpulkan Poin — Tukar Hadiah Seru!
+                </div>
+            </div>
+
+            <div class="dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot active"></div>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right-panel">
+            <div class="panel-title">⭐ Program Poin Member Digital — Kumpulkan Poin, Tukar Hadiah!</div>
+            <div class="main-heading">Cara Kerja <span>Kartu Member</span><br>YUNA GROUP INDONESIA</div>
+
+            <div class="steps">
+                <div class="step-row">
+                    <div class="snum">1</div>
+                    <div class="s-emoji">📝</div>
+                    <div class="s-info">
+                        <div class="s-title">Daftar Member — GRATIS!</div>
+                        <div class="s-desc">Minta kasir untuk mendaftarkan nama & nomor HP Anda. Proses cepat kurang
+                            dari 1 menit.</div>
+                    </div>
+                </div>
+                <div class="step-row">
+                    <div class="snum">2</div>
+                    <div class="s-emoji">🪪</div>
+                    <div class="s-info">
+                        <div class="s-title">Terima Kartu Member + QR Code Unik</div>
+                        <div class="s-desc">Anda akan mendapat kartu digital dengan QR Code pribadi yang unik dan tidak
+                            bisa dipalsukan.</div>
+                    </div>
+                </div>
+                <div class="step-row">
+                    <div class="snum">3</div>
+                    <div class="s-emoji">📲</div>
+                    <div class="s-info">
+                        <div class="s-title">Tunjukkan QR Code Setiap Bertransaksi</div>
+                        <div class="s-desc">Setiap kali belanja di sini, tunjukkan QR Code Anda ke kasir untuk discan.
+                            Jangan sampai lupa!</div>
+                    </div>
+                </div>
+                <div class="step-row">
+                    <div class="snum">4</div>
+                    <div class="s-emoji">⭐</div>
+                    <div class="s-info">
+                        <div class="s-title">Poin Otomatis Bertambah!</div>
+                        <div class="s-desc">Setiap scan berhasil, poin langsung masuk ke akun Anda. Makin sering transaksi, makin cepat poin terkumpul — makin besar hadiahnya!</div>
+                    </div>
+                </div>
+                <div class="step-row">
+                    <div class="snum">5</div>
+                    <div class="s-emoji">🎁</div>
+                    <div class="s-info">
+                        <div class="s-title">Tukar Poin Dapat Hadiah!</div>
+                        <div class="s-desc">Poin yang terkumpul bisa ditukar hadiah pilihan: sembako, rokok, voucher & lainnya. Tanya kasir untuk info hadiah tersedia!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-strip">
+                <div class="footer-icon">�</div>
+                <div class="footer-text">
+                    <strong>Makin sering transaksi → Makin banyak poin → Makin besar hadiahnya!</strong>
+                    <span>Pantau total poin & riwayat transaksi kapan saja lewat portal member digital.</span>
+                </div>
+                <div class="footer-badge">⭐ Daftar Gratis!</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ===================================================
+        //  TOGGLE EDITOR
+        // ===================================================
+        var edOpen = true;
+        function toggleEditor() {
+            edOpen = !edOpen;
+            document.getElementById('edBody').style.display = edOpen ? 'grid' : 'none';
+            document.getElementById('edToggle').style.transform = edOpen ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+
+        // ===================================================
+        //  APPLY EDITS (tagline + alert)
+        // ===================================================
+        function applyEdits() {
+            var tagline = document.getElementById('ed-tagline').value;
+            var alertTitle = document.getElementById('ed-alert-title').value;
+            var alertDesc = document.getElementById('ed-alert-desc').value;
+            if (tagline !== undefined) document.getElementById('mading-tagline-el').textContent = tagline || 'Percetakan · Jasa Dukcapil · Payment · Lacak · Edit';
+            if (alertTitle) document.getElementById('mading-alert-title').innerHTML = alertTitle;
+            if (alertDesc) document.getElementById('mading-alert-desc').innerHTML = alertDesc;
+        }
+
+        // ===================================================
+        //  LOGO UPLOAD
+        // ===================================================
+        function handleLogo(input) {
+            var file = input.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var src = e.target.result;
+                var img = document.getElementById('mading-logo-img');
+                var emoji = document.getElementById('mading-logo-emoji');
+                img.src = src; img.style.display = 'block'; emoji.style.display = 'none';
+                var area = document.getElementById('logo-area');
+                area.classList.add('has-logo');
+                document.getElementById('logo-inner').innerHTML =
+                    '<img src="' + src + '" class="logo-thumb" alt="logo">'
+                    + '<button class="logo-rm" onclick="removeLogo(event)">✕</button>'
+                    + '<div class="la-text" style="font-size:0.6rem;color:#059669">Logo terpasang ✔</div>';
+            };
+            reader.readAsDataURL(file);
+        }
+        function removeLogo(e) {
+            e.stopPropagation();
+            var img = document.getElementById('mading-logo-img');
+            var emoji = document.getElementById('mading-logo-emoji');
+            img.src = ''; img.style.display = 'none'; emoji.style.display = 'inline';
+            document.getElementById('logo-area').classList.remove('has-logo');
+            document.getElementById('logo-inner').innerHTML =
+                '<div style="text-align:center"><div style="font-size:1.4rem">📁</div>'
+                + '<div class="la-text">Klik upload logo</div><div class="la-sub">PNG / JPG / SVG</div></div>';
+            document.getElementById('logo-input').value = '';
+        }
+
+        // ===================================================
+        //  COLOR THEMES
+        // ===================================================
+        var colorThemes = [
+            { key:'merah',  label:'Merah',   c1:'#7f1d1d', c2:'#ef4444' },
+            { key:'oranye', label:'Oranye',  c1:'#7c2d12', c2:'#f97316' },
+            { key:'kuning', label:'Kuning',  c1:'#713f12', c2:'#eab308' },
+            { key:'hijau',  label:'Hijau',   c1:'#14532d', c2:'#22c55e' },
+            { key:'teal',   label:'Teal',    c1:'#134e4a', c2:'#14b8a6' },
+            { key:'biru',   label:'Biru',    c1:'#1e3a8a', c2:'#3b82f6' },
+            { key:'ungu',   label:'Ungu',    c1:'#4c1d95', c2:'#8b5cf6' },
+            { key:'pink',   label:'Pink',    c1:'#831843', c2:'#ec4899' },
+            { key:'gelap',  label:'Elegan',  c1:'#0f172a', c2:'#334155' },
+            { key:'emas',   label:'Emas',    c1:'#451a03', c2:'#d97706' }
+        ];
+
+        function buildSwatches() {
+            var container = document.getElementById('swatches');
+            container.innerHTML = '';
+            colorThemes.forEach(function(t) {
+                var wrap = document.createElement('div'); wrap.className = 'sw-wrap';
+                var btn = document.createElement('div');
+                btn.className = 'swatch' + (t.key === 'merah' ? ' active' : '');
+                btn.style.background = 'linear-gradient(135deg,' + t.c1 + ',' + t.c2 + ')';
+                btn.id = 'sw-' + t.key;
+                btn.innerHTML = '<div class="tick">✔️</div>';
+                btn.onclick = (function(th) { return function() { applyTheme(th.c1, th.c2, th.key); }; })(t);
+                var lbl = document.createElement('div'); lbl.className = 'sw-label'; lbl.textContent = t.label;
+                wrap.appendChild(btn); wrap.appendChild(lbl);
+                container.appendChild(wrap);
+            });
+        }
+
+        function applyTheme(c1, c2, key) {
+            document.querySelectorAll('.swatch').forEach(function(el) { el.classList.remove('active'); });
+            if (key) { var sw = document.getElementById('sw-' + key); if (sw) sw.classList.add('active'); }
+            document.getElementById('cc1').value = c1;
+            document.getElementById('cc2').value = c2;
+            injectTheme(c1, c2);
+        }
+        function applyCustomColor() {
+            var c1 = document.getElementById('cc1').value;
+            var c2 = document.getElementById('cc2').value;
+            document.querySelectorAll('.swatch').forEach(function(el) { el.classList.remove('active'); });
+            injectTheme(c1, c2);
+        }
+        function injectTheme(c1, c2) {
+            var st = document.getElementById('theme-tag');
+            if (!st) { st = document.createElement('style'); st.id = 'theme-tag'; document.head.appendChild(st); }
+            st.textContent = [
+                '#left-panel { background: linear-gradient(160deg,' + c1 + ' 0%,' + c2 + ' 60%,' + c2 + 'cc 100%) !important; }',
+                '.panel-title { color: ' + c2 + ' !important; }',
+                '.main-heading span { color: ' + c2 + ' !important; }',
+                '.snum { background: linear-gradient(135deg,' + c2 + ',' + c1 + ') !important; }',
+                '.footer-strip { background: linear-gradient(135deg,' + c1 + ',' + c2 + ') !important; }'
+            ].join('\n');
+        }
+
+        // ===================================================
+        //  MOTIF
+        // ===================================================
+        var motifs = [
+            { key:'polos',    label:'Polos',    bg:'' },
+            { key:'dots',     label:'Titik',    bg:'radial-gradient(circle, #fff 1.5px, transparent 1.5px)', size:'18px 18px' },
+            { key:'bigdots',  label:'Bulat',    bg:'radial-gradient(circle, #fff 5px, transparent 5px)', size:'28px 28px' },
+            { key:'diagonal', label:'Diagonal', bg:'repeating-linear-gradient(45deg, #fff 0px, #fff 1.5px, transparent 1.5px, transparent 12px)', size:'' },
+            { key:'grid',     label:'Grid',     bg:'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', size:'20px 20px' },
+            { key:'zigzag',   label:'Zigzag',   bg:'linear-gradient(135deg,#fff 25%,transparent 25%) -10px 0, linear-gradient(225deg,#fff 25%,transparent 25%) -10px 0, linear-gradient(315deg,#fff 25%,transparent 25%), linear-gradient(45deg,#fff 25%,transparent 25%)', size:'20px 20px' },
+            { key:'wave',     label:'Gelombang',bg:'repeating-linear-gradient(-45deg,transparent,transparent 5px,#fff 5px,#fff 6px)', size:'' },
+            { key:'cross',    label:'Silang',   bg:'linear-gradient(#fff 2px, transparent 2px), linear-gradient(90deg, #fff 2px, transparent 2px)', size:'50px 50px' }
+        ];
+        function buildMotifGrid() {
+            var c = document.getElementById('motif-grid'); c.innerHTML = '';
+            motifs.forEach(function(m) {
+                var btn = document.createElement('div');
+                btn.className = 'motif-btn' + (m.key === 'polos' ? ' active' : '');
+                btn.id = 'mb-' + m.key;
+                btn.style.background = 'linear-gradient(135deg,#1e3a8a,#3b82f6)';
+                if (m.bg) { btn.style.backgroundImage = m.bg; if (m.size) btn.style.backgroundSize = m.size; }
+                btn.innerHTML = '<div class="ml">' + m.label + '</div>';
+                btn.onclick = (function(mo) { return function() { applyMotif(mo.key); }; })(m);
+                c.appendChild(btn);
+            });
+        }
+        function applyMotif(key) {
+            document.querySelectorAll('.motif-btn').forEach(function(el) { el.classList.remove('active'); });
+            var btn = document.getElementById('mb-' + key); if (btn) btn.classList.add('active');
+            var ov = document.getElementById('lp-motif-overlay');
+            var m = motifs.find(function(x) { return x.key === key; });
+            if (!m || !m.bg) { ov.style.backgroundImage = 'none'; }
+            else { ov.style.backgroundImage = m.bg; ov.style.backgroundSize = m.size || ''; }
+        }
+        function updateOpacity(val) {
+            document.getElementById('op-val').textContent = val + '%';
+            document.getElementById('lp-motif-overlay').style.opacity = val / 100;
+        }
+
+        // ===================================================
+        //  INIT
+        // ===================================================
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('ed-tagline').value = 'Percetakan · Jasa Dukcapil · Payment · Lacak · Edit';
+            document.getElementById('ed-alert-title').value = '⚠️ Tunjukkan QR Code Setiap Bertransaksi!';
+            document.getElementById('ed-alert-desc').value = 'Scan QR tiap transaksi agar poin Anda langsung masuk otomatis. Kumpulkan Poin — Tukar Hadiah Seru!';
+            buildSwatches();
+            buildMotifGrid();
+            injectTheme('#7f1d1d', '#ef4444');
+        });
+
+        function savePDF() {
+            alert('Klik "Cetak", lalu di dialog pilih printer "Save as PDF" atau "Microsoft Print to PDF"');
+        }
+
+        function downloadImg(format) {
+            var btnPng = document.getElementById('btnPng');
+            var btnJpg = document.getElementById('btnJpg');
+            var poster = document.getElementById('poster');
+
+            btnPng.disabled = true;
+            btnJpg.disabled = true;
+            btnPng.textContent = '⏳ Memproses...';
+            btnJpg.textContent = '⏳ Memproses...';
+
+            html2canvas(poster, {
+                scale: 3,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                logging: false
+            }).then(function (canvas) {
+                var link = document.createElement('a');
+                if (format === 'png') {
+                    link.download = 'MADING_KARTU_MEMBER_HAMBA_CELL_PRINT.png';
+                    link.href = canvas.toDataURL('image/png');
+                } else {
+                    link.download = 'MADING_KARTU_MEMBER_HAMBA_CELL_PRINT.jpg';
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                }
+                link.click();
+                btnPng.disabled = false;
+                btnJpg.disabled = false;
+                btnPng.textContent = '🖼️ Download PNG';
+                btnJpg.textContent = '📸 Download JPG';
+            }).catch(function (err) {
+                alert('Gagal: ' + err.message);
+                btnPng.disabled = false;
+                btnJpg.disabled = false;
+                btnPng.textContent = '🖼️ Download PNG';
+                btnJpg.textContent = '📸 Download JPG';
+            });
+        }
+    </script>
+
+</body>
+
+</html>
